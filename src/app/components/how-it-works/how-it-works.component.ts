@@ -22,16 +22,23 @@ import { CommonModule } from '@angular/common';
           @for (step of steps; track step.number; let isLast = $last) {
             <div class="step-wrapper">
               <article class="step-card" [attr.aria-label]="'Paso ' + step.number + ': ' + step.title">
-                <div class="step-number" [style.background]="step.color">
+                <div class="step-number" [style.background]="step.gradient">
                   {{ step.number }}
                 </div>
-                <div class="step-icon">{{ step.icon }}</div>
+                <div class="step-icon-wrap" [style.color]="step.iconColor" [style.background]="step.iconBg">
+                  <span [innerHTML]="step.iconSvg"></span>
+                </div>
                 <h3 class="step-title">{{ step.title }}</h3>
                 <p class="step-desc">{{ step.description }}</p>
-                <ul class="step-details" aria-label="Detalles">
+                <ul class="step-details">
                   @for (detail of step.details; track detail) {
                     <li>
-                      <span class="detail-check" aria-hidden="true">✓</span>
+                      <span class="detail-check" aria-hidden="true">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                      </span>
                       {{ detail }}
                     </li>
                   }
@@ -39,9 +46,9 @@ import { CommonModule } from '@angular/common';
               </article>
               @if (!isLast) {
                 <div class="step-connector" aria-hidden="true">
-                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                    <path d="M10 20 H30 M22 12 L30 20 L22 28" stroke="#4CAF50" stroke-width="2.5"
-                          stroke-linecap="round" stroke-linejoin="round"/>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                    stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
                 </div>
               }
@@ -49,7 +56,6 @@ import { CommonModule } from '@angular/common';
           }
         </div>
 
-        <!-- Stats row -->
         <div class="hiw__results">
           @for (result of results; track result.label) {
             <div class="result-item">
@@ -63,18 +69,13 @@ import { CommonModule } from '@angular/common';
     </section>
   `,
   styles: [`
-    .hiw {
-      background: var(--color-white);
-    }
+    .hiw { background: var(--color-white); }
 
-    .hiw__header {
-      margin-bottom: var(--space-16);
-    }
+    .hiw__header { margin-bottom: var(--space-16); }
 
-    /* Steps */
     .hiw__steps {
       display: flex;
-      align-items: flex-start;
+      align-items: stretch;
       gap: 0;
       margin-bottom: var(--space-16);
     }
@@ -83,6 +84,7 @@ import { CommonModule } from '@angular/common';
       display: flex;
       align-items: center;
       flex: 1;
+      min-width: 0;
     }
 
     .step-card {
@@ -94,31 +96,38 @@ import { CommonModule } from '@angular/common';
       border: 1px solid var(--color-border);
       transition: all var(--transition-base);
       position: relative;
+      min-width: 0;
     }
 
     .step-card:hover {
       transform: translateY(-6px);
       box-shadow: var(--shadow-lg);
       border-color: var(--color-primary-pale);
+      background: var(--color-white);
     }
 
     .step-number {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: var(--font-heading);
       font-weight: var(--fw-bold);
-      font-size: var(--text-xl);
+      font-size: var(--text-base);
       color: var(--color-white);
       margin: 0 auto var(--space-4);
     }
 
-    .step-icon {
-      font-size: 2.5rem;
-      margin-bottom: var(--space-4);
+    .step-icon-wrap {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-5);
     }
 
     .step-title {
@@ -130,9 +139,9 @@ import { CommonModule } from '@angular/common';
     }
 
     .step-desc {
-      font-size: var(--text-base);
+      font-size: var(--text-sm);
       color: var(--color-text-secondary);
-      line-height: 1.6;
+      line-height: 1.7;
       margin-bottom: var(--space-5);
     }
 
@@ -145,56 +154,61 @@ import { CommonModule } from '@angular/common';
 
     .step-details li {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: var(--space-2);
       font-size: var(--text-sm);
       color: var(--color-text-secondary);
     }
 
     .detail-check {
-      color: var(--color-primary-light);
-      font-weight: var(--fw-bold);
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
       flex-shrink: 0;
-      margin-top: 2px;
     }
 
-    /* Connector arrow */
     .step-connector {
       flex-shrink: 0;
-      padding: 0 var(--space-2);
-      margin-top: -var(--space-8);
+      padding: 0 var(--space-3);
+      display: flex;
+      align-items: center;
+      opacity: 0.7;
     }
 
     /* Results bar */
     .hiw__results {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-4);
       background: var(--gradient-hero);
       border-radius: var(--radius-xl);
-      padding: var(--space-8);
+      padding: var(--space-8) var(--space-6);
+      gap: 0;
     }
 
     .result-item {
       text-align: center;
-      color: var(--color-white);
+      padding: 0 var(--space-4);
+      border-right: 1px solid rgba(255,255,255,0.12);
     }
+
+    .result-item:last-child { border-right: none; }
 
     .result-value {
       display: block;
       font-family: var(--font-heading);
       font-size: var(--text-4xl);
       font-weight: var(--fw-extrabold);
-      color: var(--color-primary-pale);
+      color: #69F0AE;
       margin-bottom: var(--space-1);
+      letter-spacing: -0.02em;
     }
 
     .result-label {
       font-size: var(--text-sm);
-      color: rgba(255,255,255,0.75);
+      color: rgba(255,255,255,0.65);
+      line-height: 1.4;
     }
 
-    /* Responsive */
     @media (max-width: 1024px) {
       .hiw__steps {
         flex-direction: column;
@@ -202,13 +216,25 @@ import { CommonModule } from '@angular/common';
       }
 
       .step-wrapper { flex-direction: column; width: 100%; }
-      .step-connector { transform: rotate(90deg); }
 
-      .hiw__results { grid-template-columns: repeat(2, 1fr); }
+      .step-connector {
+        transform: rotate(90deg);
+        padding: var(--space-2) 0;
+      }
+
+      .hiw__results { grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+
+      .result-item {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.12);
+        padding-bottom: var(--space-5);
+      }
+
+      .result-item:nth-child(2),
+      .result-item:last-child { border-bottom: none; }
     }
 
     @media (max-width: 640px) {
-      .hiw__results { grid-template-columns: 1fr 1fr; gap: var(--space-6); }
       .result-value { font-size: var(--text-3xl); }
     }
   `]
@@ -217,10 +243,12 @@ export class HowItWorksComponent {
   steps = [
     {
       number: '01',
-      icon: '🔍',
+      iconSvg: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>`,
+      iconColor: '#1B5E20',
+      iconBg: '#E8F5E9',
       title: 'Explorar',
       description: 'Descubre todas las actividades deportivas disponibles en tu universidad, filtradas por horario, tipo y espacio.',
-      color: '#1B5E20',
+      gradient: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)',
       details: [
         'Búsqueda en tiempo real',
         'Filtros por horario, tipo y nivel',
@@ -230,10 +258,12 @@ export class HowItWorksComponent {
     },
     {
       number: '02',
-      icon: '🎯',
+      iconSvg: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+      iconColor: '#2E7D32',
+      iconBg: '#C8E6C9',
       title: 'Elegir',
       description: 'Selecciona la actividad que más te convenga. La IA ya sincronizó tu calendario académico para mostrarte las mejores opciones.',
-      color: '#2E7D32',
+      gradient: 'linear-gradient(135deg, #2E7D32 0%, #388E3C 100%)',
       details: [
         'Detalles del instructor y espacio',
         'Integrado con tu horario académico',
@@ -243,10 +273,12 @@ export class HowItWorksComponent {
     },
     {
       number: '03',
-      icon: '✅',
+      iconSvg: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      iconColor: '#388E3C',
+      iconBg: '#A5D6A7',
       title: 'Confirmar',
       description: 'Confirma tu reserva con un clic. Recibirás confirmación inmediata y recordatorios automáticos antes de la actividad.',
-      color: '#4CAF50',
+      gradient: 'linear-gradient(135deg, #388E3C 0%, #4CAF50 100%)',
       details: [
         'Confirmación instantánea',
         'QR de acceso a instalaciones',
@@ -257,9 +289,9 @@ export class HowItWorksComponent {
   ];
 
   results = [
-    { value: '30s', label: 'Tiempo promedio de reserva' },
+    { value: '30s',  label: 'Tiempo promedio de reserva' },
     { value: '+48%', label: 'Participación estudiantil' },
     { value: '-60%', label: 'Carga administrativa' },
-    { value: '94%', label: 'Satisfacción de usuarios' },
+    { value: '94%',  label: 'Satisfacción de usuarios' },
   ];
 }
