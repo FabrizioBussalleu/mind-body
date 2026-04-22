@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export interface Feature {
   iconSvg: string;
@@ -39,7 +40,6 @@ const TAB_ICONS = {
       <div class="container">
 
         <div class="features__header text-center">
-          <span class="section-tag">Características</span>
           <h2 class="section-title" id="features-heading">
             Todo lo que necesitas para gestionar<br>
             el bienestar universitario
@@ -59,7 +59,7 @@ const TAB_ICONS = {
               role="tab"
               [attr.aria-selected]="activeTab === tab.id"
             >
-              <span class="tab-icon" [innerHTML]="tab.iconSvg"></span>
+              <span class="tab-icon" [innerHTML]="safe(tab.iconSvg)"></span>
               {{ tab.label }}
             </button>
           }
@@ -69,7 +69,7 @@ const TAB_ICONS = {
           @for (feature of currentFeatures; track feature.title) {
             <article class="feature-card">
               <div class="feature-card__icon" [style.background]="feature.bg" [style.color]="feature.color">
-                <span [innerHTML]="feature.iconSvg"></span>
+                <span [innerHTML]="safe(feature.iconSvg)"></span>
               </div>
               <div class="feature-card__tag" [style.color]="feature.color">{{ feature.tag }}</div>
               <h3 class="feature-card__title">{{ feature.title }}</h3>
@@ -139,6 +139,15 @@ const TAB_ICONS = {
       display: flex;
       align-items: center;
       flex-shrink: 0;
+    }
+
+    /* span injected by [innerHTML] must be flex so the SVG centres inside its box */
+    .tab-icon > span,
+    .feature-card__icon > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
     }
 
     .features__grid {
@@ -261,6 +270,9 @@ const TAB_ICONS = {
   `]
 })
 export class FeaturesComponent {
+  private sanitizer = inject(DomSanitizer);
+  safe(svg: string): SafeHtml { return this.sanitizer.bypassSecurityTrustHtml(svg); }
+
   activeTab: 'students' | 'institutions' = 'students';
 
   tabs = [

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-how-it-works',
@@ -10,7 +11,6 @@ import { CommonModule } from '@angular/common';
       <div class="container">
 
         <div class="hiw__header text-center">
-          <span class="section-tag">Cómo funciona</span>
           <h2 class="section-title" id="hiw-heading">Reserva tu actividad en<br>3 simples pasos</h2>
           <p class="section-subtitle">
             Diseñado para eliminar la fricción. Sin trámites, sin colas, sin papel.
@@ -26,7 +26,7 @@ import { CommonModule } from '@angular/common';
                   {{ step.number }}
                 </div>
                 <div class="step-icon-wrap" [style.color]="step.iconColor" [style.background]="step.iconBg">
-                  <span [innerHTML]="step.iconSvg"></span>
+                  <span [innerHTML]="safe(step.iconSvg)"></span>
                 </div>
                 <h3 class="step-title">{{ step.title }}</h3>
                 <p class="step-desc">{{ step.description }}</p>
@@ -128,6 +128,14 @@ import { CommonModule } from '@angular/common';
       align-items: center;
       justify-content: center;
       margin: 0 auto var(--space-5);
+    }
+
+    /* span injected by [innerHTML] must be flex so the SVG centres inside its box */
+    .step-icon-wrap > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 0;
     }
 
     .step-title {
@@ -240,6 +248,9 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class HowItWorksComponent {
+  private sanitizer = inject(DomSanitizer);
+  safe(svg: string): SafeHtml { return this.sanitizer.bypassSecurityTrustHtml(svg); }
+
   steps = [
     {
       number: '01',

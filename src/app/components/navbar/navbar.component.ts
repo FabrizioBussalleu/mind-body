@@ -1,4 +1,4 @@
-import { Component, HostListener, signal, computed } from '@angular/core';
+import { Component, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,35 +6,32 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <header class="navbar" [class.scrolled]="isScrolled()" [class.open]="menuOpen()">
+    <header class="navbar" [class.scrolled]="isScrolled()">
       <div class="container navbar__inner">
 
         <!-- Logo -->
         <a href="#" class="navbar__logo" aria-label="Mind&Body Home">
-          <span class="logo-icon">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <circle cx="16" cy="16" r="16" fill="#4CAF50"/>
-              <path d="M8 22 C8 22 10 14 16 14 C22 14 24 22 24 22" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-              <circle cx="16" cy="10" r="3" fill="white"/>
-            </svg>
-          </span>
+          <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="16" r="16" fill="#4CAF50"/>
+            <path d="M8 22 C8 22 10 14 16 14 C22 14 24 22 24 22"
+                  stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <circle cx="16" cy="10" r="3" fill="white"/>
+          </svg>
           <span class="logo-text">
-            <span class="logo-mind">Mind</span><span class="logo-body">&amp;Body</span>
-            <sup class="logo-tm">TM</sup>
+            <span class="logo-mind">Mind</span><span class="logo-body">&amp;Body</span><sup class="logo-tm">TM</sup>
           </span>
         </a>
 
         <!-- Desktop Navigation -->
         <nav class="navbar__nav" aria-label="Navegación principal">
-          <a href="#inicio"      class="nav-link">Inicio</a>
-          <a href="#explorar"    class="nav-link">Explorar</a>
+          <a href="#inicio"        class="nav-link">Inicio</a>
+          <a href="#explorar"      class="nav-link">Explorar</a>
           <a href="#como-funciona" class="nav-link">Cómo funciona</a>
           <a href="#universidades" class="nav-link">Universidades</a>
         </nav>
 
         <!-- Desktop Actions -->
         <div class="navbar__actions">
-          <a href="#contacto" class="btn btn-outline btn-sm">Iniciar sesión</a>
           <a href="#cta" class="btn btn-primary btn-sm">Solicitar Demo</a>
         </div>
 
@@ -51,51 +48,62 @@ import { CommonModule } from '@angular/common';
           <span></span>
         </button>
       </div>
-
-      <!-- Mobile Menu -->
-      <div class="navbar__mobile-menu" [class.open]="menuOpen()" role="dialog" aria-label="Menú móvil">
-        <nav>
-          <a href="#inicio"        class="mobile-link" (click)="closeMenu()">Inicio</a>
-          <a href="#explorar"      class="mobile-link" (click)="closeMenu()">Explorar</a>
-          <a href="#como-funciona" class="mobile-link" (click)="closeMenu()">Cómo funciona</a>
-          <a href="#universidades" class="mobile-link" (click)="closeMenu()">Universidades</a>
-        </nav>
-        <div class="mobile-actions">
-          <a href="#contacto" class="btn btn-outline" (click)="closeMenu()">Iniciar sesión</a>
-          <a href="#cta"      class="btn btn-primary"  (click)="closeMenu()">Solicitar Demo</a>
-        </div>
-      </div>
     </header>
+
+    <!--
+      Mobile menu lives OUTSIDE the <header> so it never inflates the 72px bar.
+      position:fixed + top:72px anchors it right below the navbar.
+    -->
+    <div
+      class="mobile-menu"
+      [class.open]="menuOpen()"
+      role="dialog"
+      aria-label="Menú móvil"
+      [attr.aria-hidden]="!menuOpen()"
+    >
+      <nav class="mobile-menu__nav">
+        <a href="#inicio"        class="mobile-link" (click)="closeMenu()">Inicio</a>
+        <a href="#explorar"      class="mobile-link" (click)="closeMenu()">Explorar</a>
+        <a href="#como-funciona" class="mobile-link" (click)="closeMenu()">Cómo funciona</a>
+        <a href="#universidades" class="mobile-link" (click)="closeMenu()">Universidades</a>
+      </nav>
+      <div class="mobile-menu__actions">
+        <a href="#cta" class="btn btn-primary" (click)="closeMenu()">Solicitar Demo</a>
+      </div>
+    </div>
   `,
   styles: [`
+    /* ─── Bar — always exactly 72px ─────────────────────────────── */
     .navbar {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1000;
+      height: 72px;                 /* hard-coded — never grows */
       background: transparent;
       transition: background var(--transition-base), box-shadow var(--transition-base);
     }
 
     .navbar.scrolled {
       background: var(--color-primary-dark);
-      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.22);
     }
 
     .navbar__inner {
       display: flex;
       align-items: center;
-      height: 72px;
+      height: 100%;                 /* fill the 72px */
       gap: var(--space-8);
     }
 
-    /* Logo */
+    /* ─── Logo ───────────────────────────────────────────────────── */
     .navbar__logo {
       display: flex;
       align-items: center;
       gap: var(--space-2);
       flex-shrink: 0;
+      text-decoration: none;
     }
 
     .logo-text {
@@ -103,13 +111,14 @@ import { CommonModule } from '@angular/common';
       font-size: var(--text-xl);
       font-weight: var(--fw-bold);
       color: var(--color-white);
+      line-height: 1;
     }
 
     .logo-mind { color: var(--color-white); }
     .logo-body { color: var(--color-primary-pale); }
-    .logo-tm   { font-size: 0.6em; color: var(--color-primary-pale); vertical-align: super; }
+    .logo-tm   { font-size: 0.55em; color: var(--color-primary-pale); vertical-align: super; }
 
-    /* Nav */
+    /* ─── Desktop nav ────────────────────────────────────────────── */
     .navbar__nav {
       display: flex;
       align-items: center;
@@ -120,7 +129,7 @@ import { CommonModule } from '@angular/common';
     .nav-link {
       font-size: var(--text-sm);
       font-weight: var(--fw-medium);
-      color: rgba(255,255,255,0.85);
+      color: rgba(255,255,255,0.82);
       transition: color var(--transition-fast);
       position: relative;
     }
@@ -139,7 +148,7 @@ import { CommonModule } from '@angular/common';
     .nav-link:hover { color: var(--color-white); }
     .nav-link:hover::after { width: 100%; }
 
-    /* Actions */
+    /* ─── Desktop actions ────────────────────────────────────────── */
     .navbar__actions {
       display: flex;
       align-items: center;
@@ -151,101 +160,114 @@ import { CommonModule } from '@angular/common';
       font-size: var(--text-sm);
     }
 
-    .btn-outline {
-      color: rgba(255,255,255,0.85);
-      border-color: rgba(255,255,255,0.4);
-    }
-
-    .btn-outline:hover {
-      color: var(--color-white);
-      border-color: var(--color-white);
-      background: rgba(255,255,255,0.1);
-    }
-
-    /* Hamburger */
+    /* ─── Hamburger button ───────────────────────────────────────── */
     .navbar__hamburger {
       display: none;
       flex-direction: column;
+      justify-content: center;
       gap: 5px;
+      width: 40px;
+      height: 40px;
       padding: var(--space-2);
       margin-left: auto;
       cursor: pointer;
+      flex-shrink: 0;
     }
 
     .navbar__hamburger span {
       display: block;
-      width: 24px;
+      width: 22px;
       height: 2px;
       background: var(--color-white);
       border-radius: var(--radius-full);
-      transition: all var(--transition-base);
+      transition: transform var(--transition-base), opacity var(--transition-base);
       transform-origin: center;
     }
 
     .navbar__hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .navbar__hamburger.active span:nth-child(2) { opacity: 0; }
+    .navbar__hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .navbar__hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    /* Mobile Menu */
-    .navbar__mobile-menu {
-      display: none;
-      flex-direction: column;
-      background: var(--color-primary-dark);
-      padding: var(--space-4) var(--space-6) var(--space-6);
-      border-top: 1px solid rgba(255,255,255,0.1);
-      transform: translateY(-10px);
-      opacity: 0;
-      transition: all var(--transition-base);
+    /* ─── Mobile drop-down menu ──────────────────────────────────── */
+    /*
+     * Sits completely OUTSIDE the header flow.
+     * position:fixed + top:72px = anchored right below the 72px bar.
+     * Invisible and non-interactive until .open is applied.
+     */
+    .mobile-menu {
+      display: none;                /* hidden on desktop */
     }
 
-    .navbar__mobile-menu.open {
-      opacity: 1;
-      transform: translateY(0);
+    .mobile-menu__nav {
+      display: flex;
+      flex-direction: column;
     }
 
     .mobile-link {
       display: block;
       padding: var(--space-3) 0;
-      font-size: var(--text-lg);
+      font-size: var(--text-base);
       font-weight: var(--fw-medium);
-      color: rgba(255,255,255,0.85);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.82);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
       transition: color var(--transition-fast);
     }
 
     .mobile-link:hover { color: var(--color-primary-light); }
 
-    .mobile-actions {
+    .mobile-menu__actions {
       display: flex;
       flex-direction: column;
       gap: var(--space-3);
       margin-top: var(--space-5);
+      padding-bottom: var(--space-2);
     }
 
-    .mobile-actions .btn { justify-content: center; }
+    .mobile-menu__actions .btn { justify-content: center; }
 
-    /* Responsive */
+    /* ─── Responsive ─────────────────────────────────────────────── */
     @media (max-width: 768px) {
-      .navbar__nav, .navbar__actions { display: none; }
+      .navbar__nav,
+      .navbar__actions   { display: none; }
       .navbar__hamburger { display: flex; }
-      .navbar__mobile-menu { display: flex; }
+
+      /* Mobile menu: fixed below the bar, slides in/out */
+      .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        background: var(--color-primary-dark);
+        padding: var(--space-4) var(--space-5) var(--space-6);
+        border-top: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+        /* Start off-screen and invisible */
+        opacity: 0;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity var(--transition-base), transform var(--transition-base);
+      }
+
+      .mobile-menu.open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
     }
   `]
 })
 export class NavbarComponent {
   isScrolled = signal(false);
-  menuOpen = signal(false);
+  menuOpen  = signal(false);
 
   @HostListener('window:scroll')
   onScroll(): void {
     this.isScrolled.set(window.scrollY > 40);
   }
 
-  toggleMenu(): void {
-    this.menuOpen.update(v => !v);
-  }
-
-  closeMenu(): void {
-    this.menuOpen.set(false);
-  }
+  toggleMenu(): void { this.menuOpen.update(v => !v); }
+  closeMenu():  void { this.menuOpen.set(false); }
 }

@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+const WA_NUMBER = '51987450340'; // +51 987 450 340
 
 @Component({
   selector: 'app-cta',
@@ -37,29 +39,40 @@ import { FormsModule } from '@angular/forms';
               <div class="form-group">
                 <label for="uni-name" class="form-label">Nombre</label>
                 <input id="uni-name" type="text" class="form-input"
+                  [class.input-error]="uniTouched && !uniForm.name.trim()"
                   placeholder="Tu nombre completo"
-                  [(ngModel)]="uniForm.name" name="uniName" required/>
+                  [(ngModel)]="uniForm.name" name="uniName"
+                  (blur)="uniTouched = true"/>
               </div>
               <div class="form-group">
                 <label for="uni-email" class="form-label">Email institucional</label>
                 <input id="uni-email" type="email" class="form-input"
+                  [class.input-error]="uniTouched && !uniForm.email.trim()"
                   placeholder="nombre@universidad.edu.pe"
-                  [(ngModel)]="uniForm.email" name="uniEmail" required/>
+                  [(ngModel)]="uniForm.email" name="uniEmail"
+                  (blur)="uniTouched = true"/>
               </div>
             </div>
             <div class="form-group">
               <label for="uni-institution" class="form-label">Universidad</label>
               <input id="uni-institution" type="text" class="form-input"
+                [class.input-error]="uniTouched && !uniForm.institution.trim()"
                 placeholder="Nombre de tu universidad"
-                [(ngModel)]="uniForm.institution" name="uniInstitution" required/>
+                [(ngModel)]="uniForm.institution" name="uniInstitution"
+                (blur)="uniTouched = true"/>
             </div>
-            <button type="submit" class="btn btn-primary btn-lg form-submit" [disabled]="uniSubmitted()">
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg form-submit"
+              [disabled]="uniSubmitted() || !uniFormValid()"
+              [class.btn-incomplete]="uniTouched && !uniFormValid() && !uniSubmitted()"
+            >
               @if (uniSubmitted()) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <polyline points="20 6 9 17 4 12"/>
                 </svg>
-                Solicitud enviada — te contactaremos pronto
+                Solicitud enviada — te contactaremos
               } @else {
                 Solicitar Demo gratuita
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -69,20 +82,6 @@ import { FormsModule } from '@angular/forms';
               }
             </button>
           </form>
-
-          <ul class="cta-guarantees">
-            @for (g of guarantees; track g) {
-              <li>
-                <span class="guarantee-check" aria-hidden="true">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                </span>
-                {{ g }}
-              </li>
-            }
-          </ul>
         </div>
 
         <!-- Students CTA -->
@@ -105,10 +104,17 @@ import { FormsModule } from '@angular/forms';
             <div class="form-group">
               <label for="stu-email" class="form-label">Email universitario</label>
               <input id="stu-email" type="email" class="form-input"
+                [class.input-error]="stuTouched && !stuForm.email.trim()"
                 placeholder="codigo@universidad.edu.pe"
-                [(ngModel)]="stuForm.email" name="stuEmail" required/>
+                [(ngModel)]="stuForm.email" name="stuEmail"
+                (blur)="stuTouched = true"/>
             </div>
-            <button type="submit" class="btn btn-lg form-submit students-btn" [disabled]="stuSubmitted()">
+            <button
+              type="submit"
+              class="btn btn-lg form-submit students-btn"
+              [disabled]="stuSubmitted() || !stuFormValid()"
+              [class.btn-incomplete]="stuTouched && !stuFormValid() && !stuSubmitted()"
+            >
               @if (stuSubmitted()) {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                   stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -158,20 +164,24 @@ import { FormsModule } from '@angular/forms';
     .cta-circle--1 { width: 400px; height: 400px; top: -150px; left: -100px; }
     .cta-circle--2 { width: 320px; height: 320px; bottom: -110px; right: -60px; }
 
+    /* Grid — stretch makes both panels share the same height */
     .cta__container {
       position: relative;
       z-index: 1;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: var(--space-6);
-      align-items: start;
+      align-items: stretch;   /* ← equal height */
     }
 
+    /* Panels fill their grid cell */
     .cta-panel {
       background: var(--color-primary-dark);
       border-radius: var(--radius-xl);
       padding: var(--space-10);
       color: var(--color-white);
+      display: flex;
+      flex-direction: column;
     }
 
     .cta-panel--students {
@@ -190,6 +200,7 @@ import { FormsModule } from '@angular/forms';
       padding: 6px var(--space-4);
       border-radius: var(--radius-full);
       margin-bottom: var(--space-5);
+      width: fit-content;
     }
 
     .students-badge { color: rgba(255,255,255,0.95); }
@@ -210,11 +221,12 @@ import { FormsModule } from '@angular/forms';
       margin-bottom: var(--space-8);
     }
 
+    /* Form sits at the bottom of the flex panel */
     .cta-form {
       display: flex;
       flex-direction: column;
       gap: var(--space-4);
-      margin-bottom: var(--space-6);
+      margin-top: auto;   /* pushes form to bottom when panel heights differ */
     }
 
     .form-row {
@@ -255,6 +267,11 @@ import { FormsModule } from '@angular/forms';
       background: rgba(255,255,255,0.12);
     }
 
+    /* Red border on invalid-touched inputs */
+    .form-input.input-error {
+      border-color: rgba(255, 100, 100, 0.7);
+    }
+
     .form-submit {
       display: inline-flex;
       align-items: center;
@@ -270,9 +287,16 @@ import { FormsModule } from '@angular/forms';
       transform: translateY(-2px);
     }
 
+    /* Greyed out while fields are empty */
     .form-submit:disabled {
-      background: rgba(255,255,255,0.18);
+      opacity: 0.55;
       cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Subtle shake hint when user tries to submit empty */
+    .form-submit.btn-incomplete {
+      border: 1.5px solid rgba(255,255,255,0.4);
     }
 
     .students-btn {
@@ -286,32 +310,7 @@ import { FormsModule } from '@angular/forms';
       transform: translateY(-2px);
     }
 
-    .cta-guarantees {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-2);
-    }
-
-    .cta-guarantees li {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      font-size: var(--text-sm);
-      color: rgba(255,255,255,0.7);
-    }
-
-    .guarantee-check {
-      width: 20px;
-      height: 20px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #69F0AE;
-      flex-shrink: 0;
-    }
-
+    /* Activity pills */
     .cta-activities {
       display: flex;
       flex-wrap: wrap;
@@ -339,7 +338,14 @@ import { FormsModule } from '@angular/forms';
     }
 
     @media (max-width: 1024px) {
-      .cta__container { grid-template-columns: 1fr; max-width: 600px; margin: 0 auto; }
+      .cta__container {
+        grid-template-columns: 1fr;
+        align-items: start;
+        max-width: 580px;
+        margin: 0 auto;
+      }
+      /* On single column, forms sit naturally (no margin-top: auto) */
+      .cta-form { margin-top: 0; }
     }
 
     @media (max-width: 640px) {
@@ -352,33 +358,52 @@ export class CtaComponent {
   uniSubmitted = signal(false);
   stuSubmitted = signal(false);
 
+  uniTouched = false;
+  stuTouched = false;
+
   uniForm = { name: '', email: '', institution: '' };
   stuForm = { email: '' };
 
-  guarantees = [
-    'Sin tarjeta de crédito requerida',
-    'Implementación guiada en 48 horas',
-    'Soporte dedicado durante el primer mes',
-    'Datos migrados sin costo adicional',
+  activities = [
+    { label: 'Yoga · Lunes 7am',  color: '#4CAF50' },
+    { label: 'Fútbol · Mié 12pm', color: '#2196F3' },
+    { label: 'Gym · Vie 6pm',     color: '#FF5722' },
   ];
 
-  activities = [
-    { label: 'Yoga · Lunes 7am',     color: '#4CAF50' },
-    { label: 'Fútbol · Mié 12pm',    color: '#2196F3' },
-    { label: 'Gym · Vie 6pm',        color: '#FF5722' },
-  ];
+  uniFormValid = computed(() =>
+    this.uniForm.name.trim() !== '' &&
+    this.uniForm.email.trim() !== '' &&
+    this.uniForm.institution.trim() !== ''
+  );
+
+  stuFormValid = computed(() =>
+    this.stuForm.email.trim() !== ''
+  );
 
   submitUniversity(event: Event): void {
     event.preventDefault();
-    if (this.uniForm.name && this.uniForm.email && this.uniForm.institution) {
-      this.uniSubmitted.set(true);
-    }
+    this.uniTouched = true;
+    if (!this.uniFormValid()) return;
+
+    const msg = encodeURIComponent(
+      `Hola! Soy ${this.uniForm.name.trim()} de ${this.uniForm.institution.trim()}. ` +
+      `Me interesa solicitar una demo de Mind&Body para nuestra universidad. ` +
+      `Mi email institucional es: ${this.uniForm.email.trim()}`
+    );
+    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank', 'noopener');
+    this.uniSubmitted.set(true);
   }
 
   submitStudent(event: Event): void {
     event.preventDefault();
-    if (this.stuForm.email) {
-      this.stuSubmitted.set(true);
-    }
+    this.stuTouched = true;
+    if (!this.stuFormValid()) return;
+
+    const msg = encodeURIComponent(
+      `Hola! Me interesa registrarme en Mind&Body como estudiante. ` +
+      `Mi email universitario es: ${this.stuForm.email.trim()}`
+    );
+    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank', 'noopener');
+    this.stuSubmitted.set(true);
   }
 }

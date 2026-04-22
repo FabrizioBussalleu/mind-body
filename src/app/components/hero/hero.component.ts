@@ -17,11 +17,6 @@ import { CommonModule } from '@angular/common';
       <div class="container hero__container">
         <!-- Content -->
         <div class="hero__content">
-          <div class="hero__badge">
-            <span class="badge-dot"></span>
-            Plataforma #1 de Bienestar Universitario
-          </div>
-
           <h1 class="hero__title" id="hero-heading">
             Transforma el deporte<br>
             universitario con<br>
@@ -31,7 +26,7 @@ import { CommonModule } from '@angular/common';
           <p class="hero__subtitle">
             Mind&amp;Body centraliza, automatiza y optimiza la gestión deportiva
             de tu universidad. Conecta a estudiantes con actividades usando IA
-            que entiende sus horarios académicos.
+            que entiende sus objetivos físicos y horarios académicos.
           </p>
 
           <div class="hero__stats" role="list">
@@ -57,17 +52,6 @@ import { CommonModule } from '@angular/common';
             </a>
           </div>
 
-          <div class="hero__trust" role="list">
-            @for (item of trustItems; track item) {
-              <span class="trust-item" role="listitem">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"
-                  stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                {{ item }}
-              </span>
-            }
-          </div>
         </div>
 
         <!-- Dashboard visual — absolutely positioned on desktop -->
@@ -171,10 +155,11 @@ import { CommonModule } from '@angular/common';
   styles: [`
     .hero {
       position: relative;
-      min-height: 100vh;
+      height: 100vh;          /* exact viewport — navbar overlaps the top 72px */
+      min-height: 560px;      /* never collapse on tiny screens */
       background: var(--gradient-hero);
       overflow: hidden;
-      padding-top: 72px;
+      /* NO padding-top here — the container handles the navbar offset */
     }
 
     .hero__bg {
@@ -202,16 +187,16 @@ import { CommonModule } from '@angular/common';
       background-size: 60px 60px;
     }
 
-    /* Container — relative anchor for absolutely-placed visual */
+    /* Container — fills the full hero, pushes content below the 72px navbar */
     .hero__container {
       position: relative;
       z-index: 1;
-      min-height: calc(100vh - 72px);
+      height: 100%;           /* fill the 100vh section */
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding-top: var(--space-16);
-      padding-bottom: var(--space-16);
+      padding-top: 88px;      /* 72px navbar + 16px breathing room */
+      padding-bottom: var(--space-10);
     }
 
     /* Content — left half on desktop */
@@ -219,30 +204,6 @@ import { CommonModule } from '@angular/common';
       max-width: 560px;
       position: relative;
       z-index: 2;
-    }
-
-    .hero__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--space-2);
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: var(--color-primary-pale);
-      font-size: var(--text-sm);
-      font-weight: var(--fw-semibold);
-      padding: 6px var(--space-4);
-      border-radius: var(--radius-full);
-      margin-bottom: var(--space-6);
-      animation: fadeInUp 0.5s ease both;
-    }
-
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      background: #69F0AE;
-      border-radius: 50%;
-      flex-shrink: 0;
-      animation: pulse-ring 2s ease infinite;
     }
 
     .hero__title {
@@ -317,23 +278,6 @@ import { CommonModule } from '@angular/common';
       margin-bottom: var(--space-6);
       animation: fadeInUp 0.6s ease 0.4s both;
     }
-
-    .hero__trust {
-      display: flex;
-      gap: var(--space-5);
-      flex-wrap: wrap;
-      animation: fadeInUp 0.6s ease 0.5s both;
-    }
-
-    .trust-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: var(--text-sm);
-      color: rgba(255,255,255,0.55);
-    }
-
-    .trust-item svg { color: #69F0AE; flex-shrink: 0; }
 
     /* Dashboard — absolute on desktop, relative on mobile */
     .hero__visual {
@@ -538,45 +482,53 @@ import { CommonModule } from '@angular/common';
       margin-top: 2px;
     }
 
-    /* Responsive */
+    /* ─── Tablet / mobile — stack layout ───────────────────────── */
     @media (max-width: 1060px) {
+      /* Allow the section to grow taller than 100vh when content stacks */
+      .hero {
+        height: auto;
+        min-height: 100vh;
+        padding-bottom: var(--space-16);
+      }
+
+      /* Container: no fixed height, just flex column centred */
+      .hero__container {
+        height: auto;
+        align-items: center;
+        text-align: center;
+        padding-bottom: 0;
+      }
+
+      /* Visual goes back to normal flow */
       .hero__visual {
         position: relative;
         top: auto;
         right: auto;
         transform: none;
         width: 100%;
-        max-width: 500px;
-        margin: var(--space-12) auto 0;
+        max-width: 480px;
+        margin: var(--space-10) auto 0;
         animation: fadeInUp 0.8s ease 0.3s both;
-      }
-
-      .hero__container {
-        min-height: auto;
-        align-items: center;
-        text-align: center;
       }
 
       .hero__content { max-width: 640px; margin: 0 auto; }
 
-      .hero__stats { justify-content: center; }
+      .hero__stats   { justify-content: center; }
       .hero__actions { justify-content: center; }
-      .hero__trust  { justify-content: center; }
 
       .hero__subtitle { margin-left: auto; margin-right: auto; }
     }
 
     @media (max-width: 768px) {
-      .hero { padding-bottom: var(--space-16); }
       .hero__stat { padding: 0 var(--space-4); }
-      .hero__trust { flex-direction: column; align-items: center; gap: var(--space-2); }
+      .ai-badge { left: 4px; bottom: -14px; }
     }
 
     @media (max-width: 480px) {
       .hero__actions { flex-direction: column; align-items: stretch; }
       .hero__actions .btn { justify-content: center; }
-      .ai-badge { left: 0; bottom: -15px; }
     }
+
   `]
 })
 export class HeroComponent {
@@ -584,12 +536,6 @@ export class HeroComponent {
     { value: '100+', label: 'Universidades' },
     { value: '89%',  label: 'Adopción móvil' },
     { value: '3',    label: 'Pasos para reservar' },
-  ];
-
-  trustItems = [
-    'Sin tarjeta de crédito',
-    'Implementación en 48h',
-    'Soporte 24/7',
   ];
 
   activities = [
