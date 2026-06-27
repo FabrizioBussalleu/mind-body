@@ -1,13 +1,10 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
-const WA_NUMBER = '51987450340'; // +51 987 450 340
 
 @Component({
   selector: 'app-cta',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   template: `
     <section class="cta" id="cta" aria-labelledby="cta-heading">
       <div class="cta__bg" aria-hidden="true">
@@ -27,61 +24,24 @@ const WA_NUMBER = '51987450340'; // +51 987 450 340
             Para Universidades
           </div>
           <h2 class="cta-panel__title" id="cta-heading">
-            Transforma tu gestión deportiva
+            Gestiona tu deporte universitario
           </h2>
           <p class="cta-panel__desc">
-            Únete a las universidades que ya digitalizaron su bienestar estudiantil.
-            Demo personalizada sin costo, implementación en 48 horas.
+            Administra actividades, cupos y asistencia desde un panel pensado para
+            el equipo deportivo de tu universidad. Crea tu cuenta de administrador
+            y empieza a gestionar el catálogo.
           </p>
 
-          <form class="cta-form" (submit)="submitUniversity($event)" novalidate>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="uni-name" class="form-label">Nombre</label>
-                <input id="uni-name" type="text" class="form-input"
-                  [class.input-error]="uniTouched && !uniForm.name.trim()"
-                  placeholder="Tu nombre completo"
-                  [(ngModel)]="uniForm.name" name="uniName"
-                  (blur)="uniTouched = true"/>
-              </div>
-              <div class="form-group">
-                <label for="uni-email" class="form-label">Email institucional</label>
-                <input id="uni-email" type="email" class="form-input"
-                  [class.input-error]="uniTouched && !uniForm.email.trim()"
-                  placeholder="nombre@universidad.edu.pe"
-                  [(ngModel)]="uniForm.email" name="uniEmail"
-                  (blur)="uniTouched = true"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="uni-institution" class="form-label">Universidad</label>
-              <input id="uni-institution" type="text" class="form-input"
-                [class.input-error]="uniTouched && !uniForm.institution.trim()"
-                placeholder="Nombre de tu universidad"
-                [(ngModel)]="uniForm.institution" name="uniInstitution"
-                (blur)="uniTouched = true"/>
-            </div>
-            <button
-              type="submit"
-              class="btn btn-primary btn-lg form-submit"
-              [disabled]="uniSubmitted() || !uniFormValid()"
-              [class.btn-incomplete]="uniTouched && !uniFormValid() && !uniSubmitted()"
-            >
-              @if (uniSubmitted()) {
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                Solicitud enviada — te contactaremos
-              } @else {
-                Solicitar Demo gratuita
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              }
-            </button>
-          </form>
+          <div class="cta-actions">
+            <a [href]="registerUrl" class="btn btn-primary btn-lg cta-btn">
+              Crear cuenta
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a [href]="loginUrl" class="cta-link">Ya tengo cuenta · Acceder</a>
+          </div>
         </div>
 
         <!-- Students CTA -->
@@ -96,40 +56,21 @@ const WA_NUMBER = '51987450340'; // +51 987 450 340
           </div>
           <h2 class="cta-panel__title">Empieza tu bienestar hoy</h2>
           <p class="cta-panel__desc">
-            Accede a todas las actividades deportivas de tu universidad.
-            Regístrate gratis y recibe tu primera recomendación personalizada.
+            Explora el catálogo de actividades de tu universidad, reserva con
+            código QR y lleva el control de tus reservas. Crea tu cuenta gratis
+            y reserva tu primera actividad.
           </p>
 
-          <form class="cta-form" (submit)="submitStudent($event)" novalidate>
-            <div class="form-group">
-              <label for="stu-email" class="form-label">Email universitario</label>
-              <input id="stu-email" type="email" class="form-input"
-                [class.input-error]="stuTouched && !stuForm.email.trim()"
-                placeholder="codigo@universidad.edu.pe"
-                [(ngModel)]="stuForm.email" name="stuEmail"
-                (blur)="stuTouched = true"/>
-            </div>
-            <button
-              type="submit"
-              class="btn btn-lg form-submit students-btn"
-              [disabled]="stuSubmitted() || !stuFormValid()"
-              [class.btn-incomplete]="stuTouched && !stuFormValid() && !stuSubmitted()"
-            >
-              @if (stuSubmitted()) {
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                Bienvenido a Mind&amp;Body
-              } @else {
-                Registrarme gratis
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              }
-            </button>
-          </form>
+          <div class="cta-actions">
+            <a [href]="registerUrl" class="btn btn-lg cta-btn students-btn">
+              Crear cuenta gratis
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <a [href]="loginUrl" class="cta-link students-link">Ya tengo cuenta · Acceder</a>
+          </div>
 
           <div class="cta-activities" aria-hidden="true">
             @for (a of activities; track a.label) {
@@ -221,58 +162,16 @@ const WA_NUMBER = '51987450340'; // +51 987 450 340
       margin-bottom: var(--space-8);
     }
 
-    /* Form sits at the bottom of the flex panel */
-    .cta-form {
+    /* Actions sit at the bottom of the flex panel */
+    .cta-actions {
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
       gap: var(--space-4);
-      margin-top: auto;   /* pushes form to bottom when panel heights differ */
+      margin-top: auto;   /* pushes actions to bottom when panel heights differ */
     }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-3);
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-label {
-      font-size: var(--text-sm);
-      font-weight: var(--fw-medium);
-      color: rgba(255,255,255,0.75);
-    }
-
-    .form-input {
-      background: rgba(255,255,255,0.08);
-      border: 1.5px solid rgba(255,255,255,0.2);
-      border-radius: var(--radius-md);
-      padding: var(--space-3) var(--space-4);
-      font-family: var(--font-body);
-      font-size: var(--text-base);
-      color: var(--color-white);
-      outline: none;
-      transition: border-color var(--transition-fast), background var(--transition-fast);
-      width: 100%;
-    }
-
-    .form-input::placeholder { color: rgba(255,255,255,0.35); }
-
-    .form-input:focus {
-      border-color: rgba(255,255,255,0.5);
-      background: rgba(255,255,255,0.12);
-    }
-
-    /* Red border on invalid-touched inputs */
-    .form-input.input-error {
-      border-color: rgba(255, 100, 100, 0.7);
-    }
-
-    .form-submit {
+    .cta-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -282,21 +181,9 @@ const WA_NUMBER = '51987450340'; // +51 987 450 340
       transition: all var(--transition-base);
     }
 
-    .form-submit:not(:disabled):hover {
+    .cta-btn:hover {
       background: #43A047;
       transform: translateY(-2px);
-    }
-
-    /* Greyed out while fields are empty */
-    .form-submit:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-      transform: none !important;
-    }
-
-    /* Subtle shake hint when user tries to submit empty */
-    .form-submit.btn-incomplete {
-      border: 1.5px solid rgba(255,255,255,0.4);
     }
 
     .students-btn {
@@ -305,10 +192,22 @@ const WA_NUMBER = '51987450340'; // +51 987 450 340
       font-weight: var(--fw-semibold);
     }
 
-    .students-btn:not(:disabled):hover {
+    .students-btn:hover {
       background: var(--color-primary-bg);
       transform: translateY(-2px);
     }
+
+    .cta-link {
+      font-size: var(--text-sm);
+      font-weight: var(--fw-medium);
+      color: rgba(255,255,255,0.75);
+      transition: color var(--transition-fast);
+    }
+
+    .cta-link:hover { color: var(--color-white); }
+
+    .students-link { color: rgba(255,255,255,0.85); }
+    .students-link:hover { color: var(--color-white); }
 
     /* Activity pills */
     .cta-activities {
@@ -344,66 +243,25 @@ const WA_NUMBER = '51987450340'; // +51 987 450 340
         max-width: 580px;
         margin: 0 auto;
       }
-      /* On single column, forms sit naturally (no margin-top: auto) */
-      .cta-form { margin-top: 0; }
+      /* On single column, actions sit naturally (no margin-top: auto) */
+      .cta-actions { margin-top: 0; }
     }
 
     @media (max-width: 640px) {
       .cta-panel { padding: var(--space-7) var(--space-6); }
-      .form-row { grid-template-columns: 1fr; }
+      .cta-actions { align-items: stretch; }
+      .cta-btn { width: 100%; }
+      .cta-link { text-align: center; }
     }
   `]
 })
 export class CtaComponent {
-  uniSubmitted = signal(false);
-  stuSubmitted = signal(false);
-
-  uniTouched = false;
-  stuTouched = false;
-
-  uniForm = { name: '', email: '', institution: '' };
-  stuForm = { email: '' };
+  readonly loginUrl = 'https://mind-body-web.netlify.app/auth/login';
+  readonly registerUrl = 'https://mind-body-web.netlify.app/auth/register';
 
   activities = [
     { label: 'Yoga · Lunes 7am',  color: '#4CAF50' },
     { label: 'Fútbol · Mié 12pm', color: '#2196F3' },
     { label: 'Gym · Vie 6pm',     color: '#FF5722' },
   ];
-
-  uniFormValid = computed(() =>
-    this.uniForm.name.trim() !== '' &&
-    this.uniForm.email.trim() !== '' &&
-    this.uniForm.institution.trim() !== ''
-  );
-
-  stuFormValid = computed(() =>
-    this.stuForm.email.trim() !== ''
-  );
-
-  submitUniversity(event: Event): void {
-    event.preventDefault();
-    this.uniTouched = true;
-    if (!this.uniFormValid()) return;
-
-    const msg = encodeURIComponent(
-      `Hola! Soy ${this.uniForm.name.trim()} de ${this.uniForm.institution.trim()}. ` +
-      `Me interesa solicitar una demo de Mind&Body para nuestra universidad. ` +
-      `Mi email institucional es: ${this.uniForm.email.trim()}`
-    );
-    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank', 'noopener');
-    this.uniSubmitted.set(true);
-  }
-
-  submitStudent(event: Event): void {
-    event.preventDefault();
-    this.stuTouched = true;
-    if (!this.stuFormValid()) return;
-
-    const msg = encodeURIComponent(
-      `Hola! Me interesa registrarme en Mind&Body como estudiante. ` +
-      `Mi email universitario es: ${this.stuForm.email.trim()}`
-    );
-    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank', 'noopener');
-    this.stuSubmitted.set(true);
-  }
 }

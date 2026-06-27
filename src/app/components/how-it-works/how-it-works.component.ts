@@ -258,13 +258,13 @@ export class HowItWorksComponent {
       iconColor: '#1B5E20',
       iconBg: '#E8F5E9',
       title: 'Explorar',
-      description: 'Descubre todas las actividades deportivas disponibles en tu universidad, filtradas por horario, tipo y espacio.',
+      description: 'Descubre las actividades deportivas disponibles en tu universidad con su horario, lugar y cupos disponibles.',
       gradient: 'linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%)',
       details: [
-        'Búsqueda en tiempo real',
-        'Filtros por horario, tipo y nivel',
-        'Recomendaciones personalizadas con IA',
-        'Vista de disponibilidad instantánea',
+        'Catálogo de Yoga, Fútbol, Básquet y más',
+        'Filtros por tipo, horario y lugar',
+        'Disponibilidad de cupos en tiempo real',
+        'Asistente con IA (beta) para sugerencias',
       ]
     },
     {
@@ -273,13 +273,13 @@ export class HowItWorksComponent {
       iconColor: '#2E7D32',
       iconBg: '#C8E6C9',
       title: 'Elegir',
-      description: 'Selecciona la actividad que más te convenga. La IA ya sincronizó tu calendario académico para mostrarte las mejores opciones.',
+      description: 'Selecciona la actividad que mejor se ajuste a ti y revisa sus detalles antes de reservar.',
       gradient: 'linear-gradient(135deg, #2E7D32 0%, #388E3C 100%)',
       details: [
-        'Detalles del instructor y espacio',
-        'Integrado con tu horario académico',
-        'Previsualización del espacio deportivo',
-        'Calificaciones de otros estudiantes',
+        'Horario, lugar y cupos de la actividad',
+        'Tipo de deporte y descripción',
+        'Validación de cupos disponibles',
+        'Reserva solo si hay lugar',
       ]
     },
     {
@@ -288,21 +288,21 @@ export class HowItWorksComponent {
       iconColor: '#388E3C',
       iconBg: '#A5D6A7',
       title: 'Confirmar',
-      description: 'Confirma tu reserva con un clic. Recibirás confirmación inmediata y recordatorios automáticos antes de la actividad.',
+      description: 'Confirma tu reserva y recibe tu código QR. Preséntalo el día de la actividad para registrar tu asistencia.',
       gradient: 'linear-gradient(135deg, #388E3C 0%, #4CAF50 100%)',
       details: [
-        'Confirmación instantánea',
-        'QR de acceso a instalaciones',
-        'Recordatorios push y email',
-        'Opción de cancelar hasta 2h antes',
+        'Confirmación inmediata',
+        'Código QR único por reserva',
+        'Historial de tus reservas',
+        'Cancela para liberar tu cupo',
       ]
     },
   ];
 
   results = [
-    { value: '30s',  label: 'Tiempo promedio de reserva' },
-    { value: '+48%', label: 'Participación estudiantil' },
-    { value: '-60%', label: 'Carga administrativa' },
-    { value: '94%',  label: 'Satisfacción de usuarios' },
+    { value: '6',     label: 'Deportes para reservar' },
+    { value: 'QR',    label: 'En cada reserva' },
+    { value: 'Cupos', label: 'Validados en tiempo real' },
+    { value: 'IA',    label: 'Asistente en beta' },
   ];
 }
