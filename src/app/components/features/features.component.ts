@@ -24,6 +24,9 @@ const ICONS = {
   fileText: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
   shield: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
   settings: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>`,
+  qr: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3M21 14v.01M14 21h.01M17 21h4v-4M21 17v.01"/></svg>`,
+  search: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>`,
+  clock: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
 };
 
 const TAB_ICONS = {
@@ -87,9 +90,9 @@ const TAB_ICONS = {
             </svg>
           </div>
           <div class="highlight-content">
-            <strong>Potenciado por Inteligencia Artificial</strong>
-            <p>Nuestro motor de recomendaciones analiza el calendario académico de cada estudiante para
-            sugerir actividades que encajan exactamente con sus horarios libres, maximizando la participación.</p>
+            <strong>Asistente con IA (en beta)</strong>
+            <p>Un asistente conversacional, impulsado por IA, ayuda a los estudiantes a buscar y reservar
+            actividades según sus preferencias. Está en fase beta, con disponibilidad limitada, y seguirá mejorando.</p>
           </div>
         </div>
 
@@ -281,33 +284,33 @@ export class FeaturesComponent {
   ];
 
   studentFeatures: Feature[] = [
-    { iconSvg: ICONS.sparkle,    title: 'Recomendaciones con IA',      tag: 'Inteligencia Artificial',  color: '#388E3C', bg: '#E8F5E9',
-      description: 'Nuestro motor analiza tu calendario académico y sugiere actividades en tus horas libres, maximizando tu bienestar sin afectar tu rendimiento.' },
-    { iconSvg: ICONS.calendar,   title: 'Reserva en 3 pasos',          tag: 'Experiencia sin fricción',  color: '#1565C0', bg: '#E3F2FD',
-      description: 'Explorar → Elegir → Confirmar. Sin papeleos ni desplazamientos innecesarios. Tu lugar reservado en menos de 30 segundos desde cualquier dispositivo.' },
-    { iconSvg: ICONS.calGrid,    title: 'Calendario Integrado',        tag: 'Gestión de tiempo',         color: '#6A1B9A', bg: '#F3E5F5',
-      description: 'Sincroniza tus actividades deportivas con tu agenda académica. Recibe recordatorios automáticos y gestiona tus reservas desde un solo lugar.' },
-    { iconSvg: ICONS.trophy,     title: 'Sistema de Recompensas',      tag: 'Gamificación',              color: '#E65100', bg: '#FFF3E0',
-      description: 'Gana puntos por cada actividad completada, sube de nivel y desbloquea beneficios exclusivos. La constancia se recompensa.' },
-    { iconSvg: ICONS.users,      title: 'Comunidad Universitaria',     tag: 'Social',                    color: '#B71C1C', bg: '#FFEBEE',
-      description: 'Únete a grupos de actividad, reta a tus compañeros y comparte tus logros. El deporte es mejor en equipo.' },
-    { iconSvg: ICONS.chart,      title: 'Seguimiento de Progreso',     tag: 'Analytics personal',        color: '#00838F', bg: '#E0F7FA',
-      description: 'Visualiza tus estadísticas de actividad, horas activas y tendencias de bienestar a lo largo del semestre.' },
+    { iconSvg: ICONS.search,     title: 'Catálogo de actividades',     tag: 'Explora',                   color: '#388E3C', bg: '#E8F5E9',
+      description: 'Explora las actividades deportivas de tu universidad —Yoga, Fútbol, Básquet, Natación, Gym y Tenis— con su horario, lugar y cupos disponibles.' },
+    { iconSvg: ICONS.calendar,   title: 'Reserva en pocos pasos',      tag: 'Sin fricción',              color: '#1565C0', bg: '#E3F2FD',
+      description: 'Elige una actividad y reserva tu lugar en segundos. El sistema valida los cupos disponibles en tiempo real para confirmar tu espacio.' },
+    { iconSvg: ICONS.qr,         title: 'Código QR en cada reserva',   tag: 'Acceso',                    color: '#6A1B9A', bg: '#F3E5F5',
+      description: 'Cada reserva genera un código QR único que presentas el día de la actividad para registrar tu asistencia.' },
+    { iconSvg: ICONS.fileText,   title: 'Historial y cancelación',     tag: 'Control',                   color: '#E65100', bg: '#FFF3E0',
+      description: 'Consulta tus reservas anteriores y cancela las que ya no necesites para liberar el cupo a otros estudiantes.' },
+    { iconSvg: ICONS.sparkle,    title: 'Asistente con IA',            tag: 'Beta',                      color: '#00838F', bg: '#E0F7FA',
+      description: 'Un asistente conversacional (en beta) te ayuda a buscar y reservar actividades según tus preferencias. Disponibilidad limitada.' },
+    { iconSvg: ICONS.users,      title: 'Tu cuenta de estudiante',     tag: 'Registro',                  color: '#B71C1C', bg: '#FFEBEE',
+      description: 'Crea tu cuenta e inicia sesión de forma segura para gestionar tus reservas desde cualquier dispositivo.' },
   ];
 
   institutionFeatures: Feature[] = [
-    { iconSvg: ICONS.trending,     title: 'Dashboard en tiempo real',      tag: 'Analytics institucional',   color: '#388E3C', bg: '#E8F5E9',
-      description: 'Visualiza en tiempo real la ocupación de espacios, inscripciones activas y el impacto del deporte en el rendimiento académico.' },
-    { iconSvg: ICONS.building,     title: 'Gestión de Espacios',           tag: 'Operaciones',               color: '#1565C0', bg: '#E3F2FD',
-      description: 'Administra horarios, capacidades y disponibilidad de todas tus instalaciones deportivas desde un panel centralizado.' },
-    { iconSvg: ICONS.checkSquare,  title: 'Inscripciones automatizadas',   tag: 'Automatización',            color: '#6A1B9A', bg: '#F3E5F5',
-      description: 'Sistema de inscripción automático con listas de espera inteligentes, confirmaciones por email y notificaciones push.' },
-    { iconSvg: ICONS.fileText,     title: 'Reportes de impacto',           tag: 'Business Intelligence',     color: '#E65100', bg: '#FFF3E0',
-      description: 'Genera reportes ejecutivos que correlacionan participación deportiva con rendimiento académico.' },
-    { iconSvg: ICONS.shield,       title: 'Control de acceso',             tag: 'Seguridad',                 color: '#B71C1C', bg: '#FFEBEE',
-      description: 'Gestiona permisos, verifica afiliaciones y controla el acceso a instalaciones con códigos QR o integración universitaria.' },
-    { iconSvg: ICONS.settings,     title: 'Integración con sistemas ERP',  tag: 'Integración tecnológica',   color: '#37474F', bg: '#ECEFF1',
-      description: 'Conéctate con Banner, PeopleSoft, SAP y otros sistemas universitarios. Sincroniza datos de matrícula y horarios.' },
+    { iconSvg: ICONS.settings,     title: 'Gestión de actividades',        tag: 'Administración',            color: '#388E3C', bg: '#E8F5E9',
+      description: 'Crea, edita o cancela actividades deportivas definiendo cupos, fecha, horario y lugar desde el panel de administración.' },
+    { iconSvg: ICONS.checkSquare,  title: 'Control de cupos',              tag: 'Operaciones',               color: '#1565C0', bg: '#E3F2FD',
+      description: 'Define la capacidad de cada actividad. El sistema valida los cupos al momento de reservar para evitar sobrecupos.' },
+    { iconSvg: ICONS.qr,           title: 'Asistencia por QR',             tag: 'Asistencia',                color: '#6A1B9A', bg: '#F3E5F5',
+      description: 'Escanea el código QR de cada estudiante para registrar su asistencia a la actividad de forma rápida y confiable.' },
+    { iconSvg: ICONS.chart,        title: 'Resumen de asistentes',         tag: 'Seguimiento',               color: '#E65100', bg: '#FFF3E0',
+      description: 'Consulta el resumen de asistentes por actividad para conocer la participación real en cada sesión.' },
+    { iconSvg: ICONS.shield,       title: 'Roles y acceso seguro',         tag: 'Seguridad',                 color: '#B71C1C', bg: '#FFEBEE',
+      description: 'Autenticación con roles de Estudiante y Administrador mediante JWT, para que cada quien acceda solo a lo que le corresponde.' },
+    { iconSvg: ICONS.trending,     title: 'Catálogo actualizado',          tag: 'Tiempo real',               color: '#37474F', bg: '#ECEFF1',
+      description: 'Los cambios que haces en las actividades se reflejan de inmediato en el catálogo que ven los estudiantes.' },
   ];
 
   get currentFeatures(): Feature[] {

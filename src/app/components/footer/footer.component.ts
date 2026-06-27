@@ -25,7 +25,8 @@ import { CommonModule } from '@angular/common';
               </span>
             </div>
             <p class="footer__tagline">
-              Democratizando el bienestar en la educación superior mediante tecnología e inteligencia artificial.
+              Plataforma para gestionar y reservar actividades deportivas universitarias:
+              catálogo, cupos, reservas con código QR y registro de asistencia.
             </p>
           </div>
 
@@ -215,15 +216,17 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class FooterComponent {
+  loginUrl = 'https://mind-body-web.netlify.app/auth/login';
+  registerUrl = 'https://mind-body-web.netlify.app/auth/register';
+
   linkGroups = [
     {
       title: 'Plataforma',
       links: [
-        { label: 'Características',  href: '#explorar' },
-        { label: 'Cómo funciona',    href: '#como-funciona' },
-        { label: 'Precios',          href: '#' },
-        { label: 'Integraciones',    href: '#' },
-        { label: 'Roadmap',          href: '#' },
+        { label: 'Explorar',      href: '#explorar' },
+        { label: 'Cómo funciona', href: '#como-funciona' },
+        { label: 'Acceder',       href: this.loginUrl },
+        { label: 'Crear cuenta',  href: this.registerUrl },
       ]
     },
   ];
