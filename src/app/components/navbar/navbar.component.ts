@@ -32,7 +32,7 @@ import { CommonModule } from '@angular/common';
 
         <!-- Desktop Actions -->
         <div class="navbar__actions">
-          <a href="#cta" class="btn btn-primary btn-sm">Solicitar Demo</a>
+          <a href="https://mind-body-web.netlify.app/auth/login" class="btn btn-primary btn-sm">Acceder</a>
         </div>
 
         <!-- Mobile Hamburger -->
@@ -68,7 +68,7 @@ import { CommonModule } from '@angular/common';
         <a href="#universidades" class="mobile-link" (click)="closeMenu()">Universidades</a>
       </nav>
       <div class="mobile-menu__actions">
-        <a href="#cta" class="btn btn-primary" (click)="closeMenu()">Solicitar Demo</a>
+        <a href="https://mind-body-web.netlify.app/auth/login" class="btn btn-primary" (click)="closeMenu()">Acceder</a>
       </div>
     </div>
   `,

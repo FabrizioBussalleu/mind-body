@@ -18,15 +18,15 @@ import { CommonModule } from '@angular/common';
         <!-- Content -->
         <div class="hero__content">
           <h1 class="hero__title" id="hero-heading">
-            Transforma el deporte<br>
-            universitario con<br>
-            <span class="hero__title-accent">inteligencia</span>
+            Gestiona y reserva<br>
+            el deporte universitario<br>
+            <span class="hero__title-accent">en un solo lugar</span>
           </h1>
 
           <p class="hero__subtitle">
-            Mind&amp;Body centraliza, automatiza y optimiza la gestión deportiva
-            de tu universidad. Conecta a estudiantes con actividades usando IA
-            que entiende sus objetivos físicos y horarios académicos.
+            Mind&amp;Body centraliza la gestión deportiva de tu universidad:
+            explora el catálogo, reserva tu actividad con código QR y administra
+            cupos y asistencia desde un solo lugar.
           </p>
 
           <div class="hero__stats" role="list">
@@ -40,8 +40,8 @@ import { CommonModule } from '@angular/common';
           </div>
 
           <div class="hero__actions">
-            <a href="#cta" class="btn btn-primary btn-lg">
-              Solicitar Demo gratuita
+            <a href="https://mind-body-web.netlify.app/auth/login" class="btn btn-primary btn-lg">
+              Acceder
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"
                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -83,39 +83,34 @@ import { CommonModule } from '@angular/common';
                   </svg>
                 </div>
                 <div class="metric-info">
-                  <span class="metric-value">248</span>
-                  <span class="metric-label">Reservas hoy</span>
+                  <span class="metric-value">Catálogo</span>
+                  <span class="metric-label">Actividades deportivas</span>
                 </div>
-                <span class="metric-trend positive">+12%</span>
               </div>
 
               <div class="metric-card">
                 <div class="metric-icon" style="background:#E3F2FD; color:#1565C0">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                    <path d="M14 14h3v3M21 14v.01M14 21h.01M17 21h4v-4M21 17v.01"/>
                   </svg>
                 </div>
                 <div class="metric-info">
-                  <span class="metric-value">1,842</span>
-                  <span class="metric-label">Estudiantes activos</span>
+                  <span class="metric-value">Reservas</span>
+                  <span class="metric-label">Con código QR</span>
                 </div>
-                <span class="metric-trend positive">+8%</span>
               </div>
 
               <div class="metric-card">
                 <div class="metric-icon" style="background:#FFF3E0; color:#E65100">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="7" width="20" height="15"/>
-                    <path d="M16 22V11h-5v11M2 7l10-5 10 5"/>
+                    <polyline points="20 6 9 17 4 12"/>
                   </svg>
                 </div>
                 <div class="metric-info">
-                  <span class="metric-value">94%</span>
-                  <span class="metric-label">Ocupación de espacios</span>
+                  <span class="metric-value">Asistencia</span>
+                  <span class="metric-label">Escaneo de QR</span>
                 </div>
-                <span class="metric-trend positive">+35%</span>
               </div>
             </div>
 
@@ -142,8 +137,8 @@ import { CommonModule } from '@angular/common';
                 </svg>
               </div>
               <div>
-                <div class="ai-title">IA Activa</div>
-                <div class="ai-desc">Recomendando para ti</div>
+                <div class="ai-title">Asistente IA</div>
+                <div class="ai-desc">En beta</div>
               </div>
             </div>
 
@@ -533,14 +528,14 @@ import { CommonModule } from '@angular/common';
 })
 export class HeroComponent {
   stats = [
-    { value: '100+', label: 'Universidades' },
-    { value: '89%',  label: 'Adopción móvil' },
-    { value: '3',    label: 'Pasos para reservar' },
+    { value: '6',    label: 'Deportes disponibles' },
+    { value: 'QR',   label: 'En cada reserva' },
+    { value: 'Beta', label: 'Asistente con IA' },
   ];
 
   activities = [
-    { name: 'Yoga Matutino',  time: 'Lun 7:00am',  space: 'Sala Zen',      spots: '3 cupos', color: '#4CAF50' },
-    { name: 'Fútbol 5',       time: 'Lun 12:00pm', space: 'Cancha A',      spots: '2 cupos', color: '#2196F3' },
-    { name: 'CrossFit',       time: 'Lun 6:00pm',  space: 'Gym Principal', spots: '5 cupos', color: '#FF5722' },
+    { name: 'Yoga',     time: 'Lun 7:00am',  space: 'Sala Zen',      spots: '3 cupos', color: '#4CAF50' },
+    { name: 'Fútbol',   time: 'Lun 12:00pm', space: 'Cancha A',      spots: '2 cupos', color: '#2196F3' },
+    { name: 'Natación', time: 'Lun 6:00pm',  space: 'Piscina',       spots: '5 cupos', color: '#FF5722' },
   ];
 }
